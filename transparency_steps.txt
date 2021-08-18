@@ -1,0 +1,70 @@
+Creating Transparent Apps with Flutter (Android Only)
+
+1. flutter create transparent_app
+
+2. AndroidManifest.xml -> Replace with new one
+    Replace With:
+    <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        package="com.example.transparent_app">
+    <application
+            android:label="transparent_app"
+            android:icon="@mipmap/ic_launcher">
+            <activity
+                android:name=".MainActivity"
+                android:launchMode="singleTop"
+                android:theme="@style/Theme.Transparent"
+                android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+                android:hardwareAccelerated="true"
+                android:windowSoftInputMode="adjustResize">
+
+                <meta-data
+                    android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
+                    android:value="true" />
+                <intent-filter>
+                    <action android:name="android.intent.action.MAIN"/>
+                    <category android:name="android.intent.category.LAUNCHER"/>
+                </intent-filter>
+            </activity>
+            <meta-data
+                android:name="flutterEmbedding"
+                android:value="2" />
+        </application>
+    </manifest>
+
+
+
+3. MainActivity.kt (Rewrite)
+    Replace With:
+        package com.example.transparent_app
+        import io.flutter.embedding.android.FlutterActivity
+        import android.os.Bundle
+        import androidx.annotation.NonNull
+        import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+        import io.flutter.embedding.android.FlutterActivityLaunchConfigs.BackgroundMode.transparent
+        import io.flutter.embedding.engine.FlutterEngine
+        import io.flutter.plugins.GeneratedPluginRegistrant
+
+        class MainActivity: FlutterActivity() {
+            override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
+                GeneratedPluginRegistrant.registerWith(flutterEngine);
+            }
+
+            override fun onCreate(savedInstanceState: Bundle?) {
+                //Transparent Mode Enabler
+                intent.putExtra("background_mode", transparent.toString())
+                super.onCreate(savedInstanceState)
+            }
+        }
+
+
+
+3. res/values/styles.xml (Append)
+    Add this to the end of file before </resources>
+        <!-- TransparentTheme -->
+        <style name="Theme.Transparent" parent="android:Theme">
+            <item name="android:windowIsTranslucent">true</item>
+            <item name="android:windowBackground">@android:color/transparent</item>
+            <item name="android:windowContentOverlay">@null</item>
+            <item name="android:windowNoTitle">true</item>
+            <item name="android:backgroundDimEnabled">false</item>
+        </style>
