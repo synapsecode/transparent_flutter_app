@@ -6,12 +6,9 @@ void main() {
 
 class TransparentApp extends StatelessWidget {
   const TransparentApp({Key key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: MainPage(),
-    );
+    return MaterialApp(home: MainPage());
   }
 }
 
